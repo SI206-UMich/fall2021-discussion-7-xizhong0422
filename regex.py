@@ -23,47 +23,75 @@ def find_word(string_list):
     """ Return a list of words that contain three digit numbers in the middle. """
 
     # initialize an empty list
+    result = []
 
     # define the regular expression
+    regular_expression = "\w+[0-9]{3}\w+"
+
 
     # loop through each line of the string list 
+    for line in string_list:
+        #word_list = line.split().strip()
+        x = re.findall(regular_expression, line)
+        if len(x) > 0:
+            result.extend(x)
 
     # find all the words that match the regular expression in each line
-    
     # loop through the found words and add the words to your empty list 
-
+    actual_result = []
     #return the list of all words that start with the letter B, E, or T
-    pass
+    for item in result:
+        if re.search('^[BETbet]', item):
+            actual_result.append(item)
+    return result
+    
 
 
 def find_days(string_list):
     """ Return a list of days from the list of strings the dates format in the text are MM/DD/YYYY. """  
 
     # initialize an empty list
-
+    result = []
     # define the regular expression
+    regular_expression = "^[0-9][0-9]\\([0-9][0-9]\\[0-9]{4}"
 
     # loop through each line of the string list
-    
+    for line in string_list:
+        x = list(re.findall("[\d]{1,2}/([\d]{1,2})/[\d]{4}", line))
+        if len(x) > 0:
+            result.extend(x)
+
     # find all the dates that match the regular expression in each line
     
     # loop through the found dates and only add the days to your empty list 
     
     #return the list of days
-    pass
+    return result
 
 def find_domains(string_list):
     """ Return a list of web address domains from the list of strings the domains of a wbsite are after www. """
 
     # initialize an empty list
-
+    result = []
     # define the regular expression
 
     # loop through each line of the string list
-
+    for line in string_list:
+        #string_list = line.split().strip()
+        x = re.findall("^http.*", line)
+        if len(x) > 0:
+            #print(x)
+            result.extend(x)
     # find all the domains that match the regular expression in each line
-
+    domain_name_list = []
     # loop through the found domains
+    for item in result:
+        website_name = item.strip("https*")
+        #print(website_name)
+        domain_name = website_name.strip("://www.")
+
+        domain_name_list.append(domain_name)
+    return domain_name_list
 
     # get the domain name by splitting the (//) after the https or http to get the website name
     # then strip the www. to get only the domain name
@@ -71,7 +99,6 @@ def find_domains(string_list):
     # add the domains to your empty list
     
     #return the list of domains
-    pass
 
 class TestAllMethods(unittest.TestCase):
 
@@ -80,6 +107,7 @@ class TestAllMethods(unittest.TestCase):
         # read the lines from the file into a list of strings
         string_list = read_file('alice_ch_1.txt')
         word_list = find_word(string_list)
+        #print(word_list)
         self.assertEqual(len(word_list),4)
     
     def test_find_days(self):
